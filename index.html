@@ -1,0 +1,2314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ObraFácil</title>
+<style>
+/* =========================================================
+   OBRAFÁCIL — ESTILOS
+   Tema: canteiro de obra / planta técnica
+   Paleta: grafite (#1E2328), âmbar de segurança (#E5A93A),
+           azul-aço (#4C8DBF), concreto (#EDEBE6)
+   ========================================================= */
+
+:root{
+  --bg: #EDEBE6;
+  --surface: #FFFFFF;
+  --surface-2: #F4F2ED;
+  --ink: #21262B;
+  --ink-soft: #5B6268;
+  --line: #DBD7CE;
+  --graphite: #21262B;
+  --graphite-2: #2C3238;
+  --amber: #E5A93A;
+  --amber-ink: #7A5410;
+  --steel: #4C8DBF;
+  --success: #3F9160;
+  --danger: #C0453A;
+  --danger-bg: #FBEAE8;
+  --radius-card: 14px;
+  --radius-sm: 8px;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --header-h: 56px;
+  --nav-h: 64px;
+}
+
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+button, input, select, textarea{ font-family: inherit; }
+h1,h2,h3,h4{ margin:0; }
+button{ cursor:pointer; }
+
+#app{
+  max-width: 560px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg);
+  position: relative;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ---------------- HEADER ---------------- */
+.app-header{
+  position: sticky;
+  top:0;
+  z-index: 40;
+  height: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+  background: var(--graphite);
+  color:#F5F3EE;
+  display:flex;
+  align-items:flex-end;
+  padding: 0 6px calc(0px) 6px;
+  padding-top: env(safe-area-inset-top, 0px);
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.app-header > *{ margin-bottom: 0; }
+.header-title-wrap{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  justify-content:center;
+}
+.header-logo{ color: var(--amber); display:flex; }
+.app-header h1{
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.header-icon-btn{
+  width:40px; height:40px;
+  border:none; background:transparent; color:#F5F3EE;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  flex-shrink:0;
+}
+.header-icon-btn svg{ width:22px; height:22px; }
+.header-icon-btn:active{ background: rgba(255,255,255,.12); }
+
+/* ---------------- MAIN / SCREENS ---------------- */
+#mainContent{
+  flex:1;
+  overflow-y:auto;
+  padding: 16px 16px calc(var(--nav-h) + 24px);
+}
+.screen{ display:none; animation: fadeIn .18s ease; }
+.screen.active{ display:block; }
+@keyframes fadeIn{ from{ opacity:0; transform: translateY(4px);} to{ opacity:1; transform:none; } }
+
+/* ---------------- HOME ---------------- */
+.hero-block{
+  background: linear-gradient(135deg, var(--graphite) 0%, var(--graphite-2) 100%);
+  background-image:
+    linear-gradient(135deg, var(--graphite) 0%, var(--graphite-2) 100%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 24px);
+  color:#F5F3EE;
+  border-radius: var(--radius-card);
+  padding: 22px 20px 24px;
+  margin-bottom: 18px;
+}
+.hero-eyebrow{
+  margin:0 0 6px;
+  font-size: 13px;
+  color: var(--amber);
+  font-weight:600;
+}
+.hero-title{
+  font-size: 21px;
+  line-height:1.3;
+  font-weight:700;
+  max-width: 20ch;
+}
+
+.quick-stats{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+}
+.quick-stats:empty{ display:none; }
+.stat-chip{
+  flex:1;
+  background: var(--surface);
+  border:1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding:10px 12px;
+}
+.stat-chip .stat-num{ font-family: var(--font-mono); font-size:18px; font-weight:700; }
+.stat-chip .stat-label{ font-size:11.5px; color:var(--ink-soft); }
+
+.section-heading{
+  font-size:15px;
+  font-weight:700;
+  margin: 4px 0 12px;
+  color: var(--ink);
+}
+.section-heading-flush{ margin:0; }
+.subsection-heading{
+  font-size:14px;
+  font-weight:700;
+  margin: 18px 0 8px;
+  color: var(--ink-soft);
+}
+
+.card-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.calc-card{
+  background: var(--surface);
+  border:1px solid var(--line);
+  border-left: 4px solid var(--accent, var(--steel));
+  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:10px;
+  text-align:left;
+  transition: transform .1s ease, box-shadow .1s ease;
+}
+.calc-card:active{ transform: scale(.97); background: var(--surface-2); }
+.calc-card-icon{ color: var(--accent, var(--steel)); }
+.calc-card-icon svg{ width:26px; height:26px; }
+.calc-card-label{ font-size:13.5px; font-weight:600; }
+.calc-card-wide{ grid-column: 1 / -1; flex-direction:row; align-items:center; }
+
+/* ---------------- FORMS ---------------- */
+.calc-form{
+  background: var(--surface);
+  border:1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 16px;
+}
+.field-group{ margin-bottom:14px; }
+.field-group:last-child{ margin-bottom:0; }
+.field-row{
+  display:flex;
+  gap:10px;
+}
+.field-row .field-group{ flex:1; min-width:0; }
+label{
+  display:block;
+  font-size:12.5px;
+  font-weight:600;
+  color: var(--ink-soft);
+  margin-bottom:5px;
+}
+input[type=text], input[type=number], input[type=search], input[type=date], select, textarea{
+  width:100%;
+  padding: 11px 12px;
+  border:1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--ink);
+  font-size:15px;
+  font-family: var(--font-mono);
+}
+select, input[type=text], textarea{ font-family: var(--font-ui); }
+input:focus, select:focus, textarea:focus{
+  outline:2px solid var(--steel);
+  outline-offset:1px;
+  background: var(--surface);
+}
+input[readonly]{ opacity:.7; }
+textarea{ resize:vertical; }
+.dyn-fields[hidden]{ display:none; }
+
+.btn-primary{
+  width:100%;
+  padding: 13px;
+  background: var(--amber);
+  color: #2A1D04;
+  border:none;
+  border-radius: var(--radius-sm);
+  font-size:15px;
+  font-weight:700;
+  margin-top: 6px;
+}
+.btn-primary:active{ background:#D69A28; }
+.btn-secondary{
+  padding: 11px 14px;
+  background: var(--surface-2);
+  border:1px solid var(--line);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  font-size:14px;
+  font-weight:600;
+}
+.btn-secondary:active{ background: var(--line); }
+.btn-danger{
+  padding: 11px 14px;
+  background: var(--danger);
+  color:#fff;
+  border:none;
+  border-radius: var(--radius-sm);
+  font-weight:700;
+}
+.btn-danger-outline{
+  padding: 11px 14px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border:1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  font-weight:600;
+  font-size:14px;
+}
+.note-text{
+  font-size:12px;
+  color: var(--ink-soft);
+  margin: 10px 2px;
+}
+
+/* ---------------- RESULT BOX ---------------- */
+.result-box{
+  margin-top:16px;
+  background: var(--graphite);
+  color:#F5F3EE;
+  border-radius: var(--radius-card);
+  padding:16px;
+}
+.result-box h4{
+  font-size:12.5px;
+  text-transform:none;
+  color: var(--amber);
+  margin-bottom:10px;
+  font-weight:700;
+}
+.result-row{
+  display:flex;
+  justify-content:space-between;
+  padding:7px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size:14px;
+}
+.result-row:last-child{ border-bottom:none; }
+.result-row .rv{ font-family: var(--font-mono); font-weight:700; }
+.result-row.total{ font-size:16px; padding-top:10px; }
+.result-row.total .rv{ color: var(--amber); }
+
+/* ---------------- TOOLBAR / SEARCH / LISTS ---------------- */
+.toolbar-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom: 14px;
+}
+.search-input{ flex:1; }
+.btn-icon-round{
+  width:44px; height:44px;
+  flex-shrink:0;
+  border:none;
+  background: var(--graphite);
+  color: var(--amber);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.btn-icon-round svg{ width:22px; height:22px; }
+.btn-icon-round:active{ background: var(--graphite-2); }
+
+.list-container{ display:flex; flex-direction:column; gap:10px; }
+.list-item{
+  background: var(--surface);
+  border:1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.list-item-main{ flex:1; min-width:0; }
+.list-item-title{ font-size:14.5px; font-weight:700; }
+.list-item-sub{ font-size:12.5px; color: var(--ink-soft); margin-top:2px; }
+.list-item-value{ font-family: var(--font-mono); font-weight:700; font-size:14px; white-space:nowrap; }
+.list-item-actions{ display:flex; gap:6px; flex-shrink:0; }
+.icon-btn-sm{
+  width:32px; height:32px;
+  border:none; background: var(--surface-2);
+  border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--ink-soft);
+}
+.icon-btn-sm svg{ width:17px; height:17px; }
+.icon-btn-sm.danger{ color: var(--danger); }
+.icon-btn-sm:active{ background: var(--line); }
+
+.empty-state{
+  text-align:center;
+  padding: 40px 20px;
+  color: var(--ink-soft);
+}
+.empty-state p{ margin:4px 0; font-size:14px; }
+.empty-sub{ font-size:12.5px; color: var(--ink-soft); }
+
+/* ---------------- BUDGET ---------------- */
+.budget-summary-card{
+  background: var(--graphite);
+  color:#F5F3EE;
+  border-radius: var(--radius-card);
+  padding:16px;
+  margin-bottom:16px;
+}
+.budget-extra-card{
+  background: var(--surface);
+  border:1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding:14px 16px 4px;
+  margin: 18px 0 14px;
+}
+.budget-extra-card h4{ font-size:13.5px; margin-bottom:12px; color: var(--ink-soft); }
+
+/* ---------------- PROJECT DETAIL ---------------- */
+.project-detail-card{
+  background: var(--surface);
+  border:1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding:16px;
+}
+.project-detail-card .pd-row{ display:flex; justify-content:space-between; padding:6px 0; font-size:13.5px; border-bottom:1px solid var(--surface-2); }
+.project-detail-card .pd-row:last-child{ border-bottom:none; }
+.project-detail-card .pd-label{ color: var(--ink-soft); }
+.project-detail-actions{ display:flex; gap:8px; margin: 12px 0 6px; flex-wrap:wrap; }
+.project-detail-actions button{ flex:1; min-width: 100px; }
+
+/* ---------------- BOTTOM NAV ---------------- */
+.bottom-nav{
+  position: sticky;
+  bottom:0;
+  z-index: 40;
+  height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  display:flex;
+  box-shadow: 0 -2px 10px rgba(0,0,0,.06);
+}
+.nav-btn{
+  flex:1;
+  border:none;
+  background:transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  color: var(--ink-soft);
+  padding: 4px 2px 6px;
+}
+.nav-btn svg{ width:21px; height:21px; }
+.nav-btn span{ font-size:10.5px; font-weight:600; }
+.nav-btn.active{ color: var(--steel); }
+.nav-btn:active{ opacity:.6; }
+
+/* ---------------- TOASTS ---------------- */
+.toast-container{
+  position: fixed;
+  left:50%; transform: translateX(-50%);
+  bottom: calc(var(--nav-h) + 14px);
+  z-index: 100;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width: calc(100% - 32px);
+  max-width: 520px;
+  pointer-events:none;
+}
+.toast{
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size:13.5px;
+  font-weight:600;
+  color:#fff;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  animation: toastIn .18s ease;
+  text-align:center;
+}
+@keyframes toastIn{ from{ opacity:0; transform: translateY(8px);} to{opacity:1; transform:none;} }
+.toast.success{ background: var(--success); }
+.toast.error{ background: var(--danger); }
+.toast.info{ background: var(--graphite); }
+
+/* ---------------- CURRENCY / CONFIG ---------------- */
+.currency-list{ display:flex; flex-direction:column; gap:10px; }
+.currency-option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background: var(--surface);
+  border:1px solid var(--line);
+  border-left: 4px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align:left;
+  width:100%;
+}
+.currency-option:active{ background: var(--surface-2); }
+.currency-flag{ font-size:22px; line-height:1; flex-shrink:0; }
+.currency-option-main{ flex:1; min-width:0; }
+.currency-option-title{ font-size:14.5px; font-weight:700; }
+.currency-option-sub{ font-size:12.5px; color: var(--ink-soft); margin-top:2px; }
+.currency-option-check{ color: var(--steel); flex-shrink:0; visibility:hidden; }
+.currency-option-check svg{ width:20px; height:20px; }
+.currency-option.selected{
+  border-left-color: var(--steel);
+  background: var(--surface-2);
+}
+.currency-option.selected .currency-option-check{ visibility:visible; }
+
+/* ---------------- MODALS ---------------- */
+.modal-overlay{
+  position: fixed; inset:0;
+  background: rgba(15,17,19,.55);
+  display:flex; align-items:flex-end; justify-content:center;
+  z-index: 90;
+}
+.modal-overlay[hidden]{ display:none; }
+.modal-box{
+  background: var(--surface);
+  width:100%;
+  max-width: 520px;
+  border-radius: 18px 18px 0 0;
+  padding: 20px 18px calc(20px + env(safe-area-inset-bottom,0px));
+  max-height: 88vh;
+  overflow-y:auto;
+  animation: modalUp .2s ease;
+}
+@keyframes modalUp{ from{ transform: translateY(20px); opacity:.4; } to{ transform:none; opacity:1; } }
+.modal-box h3{ font-size:16.5px; margin-bottom:14px; }
+.modal-actions{ display:flex; gap:10px; margin-top:16px; }
+.modal-actions button{ flex:1; }
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (min-width: 600px){
+  #app{ box-shadow: 0 0 0 1px var(--line); min-height: 100vh; }
+}
+@media (max-width: 360px){
+  .card-grid{ gap:9px; }
+  .calc-card{ padding:11px 9px; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="app-header">
+    <button id="btnBack" class="header-icon-btn" aria-label="Voltar" hidden>
+      <svg viewBox="0 0 24 24"><path d="M15 5 L8 12 L15 19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="header-title-wrap">
+      <span class="header-logo" id="headerLogo">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 21 L21 21 M5 21 L5 10 L12 4 L19 10 L19 21 M9 21 L9 15 L15 15 L15 21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      </span>
+      <h1 id="headerTitle">ObraFácil</h1>
+    </div>
+    <button id="btnConfig" class="header-icon-btn" aria-label="Configurações">
+      <svg viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1h-.2a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.1 7 1.7 1.7 0 0 0 3.8 5.1l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H8.7A1.7 1.7 0 0 0 9.7 1v-.2a2 2 0 1 1 4 0V1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.6 1h.2a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="btnHistorico" class="header-icon-btn" aria-label="Histórico">
+      <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 5v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+
+  <!-- ===================== CONTEÚDO ===================== -->
+  <main id="mainContent">
+
+    <!-- ---------- HOME ---------- -->
+    <section class="screen active" id="screen-home">
+      <div class="hero-block">
+        <p class="hero-eyebrow">Planeje. Calcule. Construa.</p>
+        <h2 class="hero-title">O que vamos calcular hoje?</h2>
+      </div>
+
+      <div class="quick-stats" id="homeQuickStats"></div>
+
+      <h3 class="section-heading">Calculadoras</h3>
+      <div class="card-grid" id="homeCalcGrid">
+        <button class="calc-card" data-target="screen-calc-paredes" style="--accent:#E5A93A">
+          <span class="calc-card-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z M3 9h18 M3 15h18 M9 3v6 M15 9v6 M9 15v6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <span class="calc-card-label">Paredes</span>
+        </button>
+        <button class="calc-card" data-target="screen-calc-piso" style="--accent:#4C8DBF">
+          <span class="calc-card-icon"><svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <span class="calc-card-label">Piso</span>
+        </button>
+        <button class="calc-card" data-target="screen-calc-pintura" style="--accent:#D6553F">
+          <span class="calc-card-icon"><svg viewBox="0 0 24 24"><path d="M4 3h9v6l3 3v9H4z M13 9l3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <span class="calc-card-label">Pintura</span>
+        </button>
+        <button class="calc-card" data-target="screen-calc-blocos" style="--accent:#8A6A46">
+          <span class="calc-card-icon"><svg viewBox="0 0 24 24"><path d="M2 8h8v5H2zM10 8h8v5h-8zM18 8h4v5h-4zM6 13h8v5H6zM14 13h8v5h-8z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+          <span class="calc-card-label">Blocos</span>
+        </button>
+        <button class="calc-card" data-target="screen-calc-concreto" style="--accent:#6B7280">
+          <span class="calc-card-icon"><svg viewBox="0 0 24 24"><path d="M4 20 L4 12 L12 4 L20 12 L20 20 Z M4 12 L20 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <span class="calc-card-label">Concreto</span>
+        </button>
+        <button class="calc-card" data-target="screen-calc-argamassa" style="--accent:#3F9160">
+          <span class="calc-card-icon"><svg viewBox="0 0 24 24"><path d="M4 10h16v10H4z M4 10l2-6h12l2 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <span class="calc-card-label">Argamassa</span>
+        </button>
+        <button class="calc-card calc-card-wide" data-target="screen-orcamento" style="--accent:#B5892E">
+          <span class="calc-card-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z M8 9h8 M8 13h8 M8 17h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <span class="calc-card-label">Orçamento da obra</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ---------- CALCULADORAS (lista) ---------- -->
+    <section class="screen" id="screen-calculadoras">
+      <h3 class="section-heading">Todas as calculadoras</h3>
+      <div class="card-grid" id="calcListGrid">
+        <!-- preenchido também via CSS duplicado do home; construído estático abaixo -->
+      </div>
+    </section>
+
+    <!-- ---------- CALC: PAREDES ---------- -->
+    <section class="screen" id="screen-calc-paredes" data-title="Calculadora de Paredes">
+      <form class="calc-form" id="formParedes" autocomplete="off">
+        <div class="field-group">
+          <label for="pd_comprimento">Comprimento da parede (m)</label>
+          <input type="number" step="0.01" min="0" id="pd_comprimento" required>
+        </div>
+        <div class="field-group">
+          <label for="pd_altura">Altura da parede (m)</label>
+          <input type="number" step="0.01" min="0" id="pd_altura" required>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="pd_qtd_portas">Qtd. portas</label>
+            <input type="number" step="1" min="0" id="pd_qtd_portas" value="0">
+          </div>
+          <div class="field-group">
+            <label for="pd_largura_porta">Largura porta (m)</label>
+            <input type="number" step="0.01" min="0" id="pd_largura_porta" value="0.80">
+          </div>
+          <div class="field-group">
+            <label for="pd_altura_porta">Altura porta (m)</label>
+            <input type="number" step="0.01" min="0" id="pd_altura_porta" value="2.10">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="pd_qtd_janelas">Qtd. janelas</label>
+            <input type="number" step="1" min="0" id="pd_qtd_janelas" value="0">
+          </div>
+          <div class="field-group">
+            <label for="pd_largura_janela">Largura janela (m)</label>
+            <input type="number" step="0.01" min="0" id="pd_largura_janela" value="1.20">
+          </div>
+          <div class="field-group">
+            <label for="pd_altura_janela">Altura janela (m)</label>
+            <input type="number" step="0.01" min="0" id="pd_altura_janela" value="1.20">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="pd_tamanho_bloco">Tamanho do bloco</label>
+            <select id="pd_tamanho_bloco">
+              <option value="10">10 cm</option>
+              <option value="15" selected>15 cm</option>
+              <option value="20">20 cm</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="pd_desperdicio">Desperdício (%)</label>
+            <input type="number" step="1" min="0" id="pd_desperdicio" value="8">
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Calcular</button>
+      </form>
+      <div class="result-box" id="resParedes" hidden></div>
+    </section>
+
+    <!-- ---------- CALC: PISO ---------- -->
+    <section class="screen" id="screen-calc-piso" data-title="Calculadora de Piso">
+      <form class="calc-form" id="formPiso" autocomplete="off">
+        <div class="field-row">
+          <div class="field-group">
+            <label for="ps_comprimento">Comprimento (m)</label>
+            <input type="number" step="0.01" min="0" id="ps_comprimento" required>
+          </div>
+          <div class="field-group">
+            <label for="ps_largura">Largura (m)</label>
+            <input type="number" step="0.01" min="0" id="ps_largura" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="ps_peca_comprimento">Comprimento da peça (cm)</label>
+            <input type="number" step="0.1" min="0.1" id="ps_peca_comprimento" value="60" required>
+          </div>
+          <div class="field-group">
+            <label for="ps_peca_largura">Largura da peça (cm)</label>
+            <input type="number" step="0.1" min="0.1" id="ps_peca_largura" value="60" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="ps_pecas_caixa">Peças por caixa</label>
+            <input type="number" step="1" min="1" id="ps_pecas_caixa" value="4" required>
+          </div>
+          <div class="field-group">
+            <label for="ps_preco_caixa">Preço por caixa (MT)</label>
+            <input type="number" step="0.01" min="0" id="ps_preco_caixa" value="0">
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="ps_desperdicio">Desperdício recomendado (%)</label>
+          <input type="number" step="1" min="0" id="ps_desperdicio" value="10">
+        </div>
+        <button type="submit" class="btn-primary">Calcular</button>
+      </form>
+      <div class="result-box" id="resPiso" hidden></div>
+    </section>
+
+    <!-- ---------- CALC: PINTURA ---------- -->
+    <section class="screen" id="screen-calc-pintura" data-title="Calculadora de Pintura">
+      <form class="calc-form" id="formPintura" autocomplete="off">
+        <div class="field-row">
+          <div class="field-group">
+            <label for="pt_comprimento">Comprimento do ambiente (m)</label>
+            <input type="number" step="0.01" min="0" id="pt_comprimento" required>
+          </div>
+          <div class="field-group">
+            <label for="pt_largura">Largura do ambiente (m)</label>
+            <input type="number" step="0.01" min="0" id="pt_largura" required>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="pt_altura">Altura do pé-direito (m)</label>
+          <input type="number" step="0.01" min="0" id="pt_altura" required>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="pt_portas">Nº de portas (1,6 m² cada)</label>
+            <input type="number" step="1" min="0" id="pt_portas" value="0">
+          </div>
+          <div class="field-group">
+            <label for="pt_janelas">Nº de janelas (1,44 m² cada)</label>
+            <input type="number" step="1" min="0" id="pt_janelas" value="0">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="pt_rendimento">Rendimento da tinta (m²/L)</label>
+            <input type="number" step="0.1" min="0.1" id="pt_rendimento" value="6">
+          </div>
+          <div class="field-group">
+            <label for="pt_demao">Nº de demãos</label>
+            <input type="number" step="1" min="1" id="pt_demao" value="2">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="pt_litros_lata">Litros por lata</label>
+            <input type="number" step="0.1" min="0.1" id="pt_litros_lata" value="18">
+          </div>
+          <div class="field-group">
+            <label for="pt_preco_lata">Preço da lata (MT)</label>
+            <input type="number" step="0.01" min="0" id="pt_preco_lata" value="0">
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Calcular</button>
+      </form>
+      <div class="result-box" id="resPintura" hidden></div>
+    </section>
+
+    <!-- ---------- CALC: BLOCOS ---------- -->
+    <section class="screen" id="screen-calc-blocos" data-title="Calculadora de Blocos">
+      <form class="calc-form" id="formBlocos" autocomplete="off">
+        <div class="field-group">
+          <label for="bl_tamanho">Tamanho do bloco</label>
+          <select id="bl_tamanho">
+            <option value="10">10 cm (≈12,5 blocos/m²)</option>
+            <option value="15" selected>15 cm (≈12,5 blocos/m²)</option>
+            <option value="20">20 cm (≈12,5 blocos/m²)</option>
+            <option value="personalizado">Personalizado</option>
+          </select>
+        </div>
+        <div class="field-group dyn-fields" id="bl_campo_personalizado" hidden>
+          <label for="bl_tamanho_custom">Tamanho personalizado (cm)</label>
+          <input type="number" step="0.1" min="0.1" id="bl_tamanho_custom" value="15">
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="bl_comprimento">Comprimento por parede (m)</label>
+            <input type="number" step="0.01" min="0" id="bl_comprimento" required>
+          </div>
+          <div class="field-group">
+            <label for="bl_altura">Altura da parede (m)</label>
+            <input type="number" step="0.01" min="0" id="bl_altura" required>
+          </div>
+          <div class="field-group">
+            <label for="bl_qtd_paredes">Qtd. de paredes iguais</label>
+            <input type="number" step="1" min="1" id="bl_qtd_paredes" value="1">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="bl_portas">Nº portas</label>
+            <input type="number" step="1" min="0" id="bl_portas" value="0">
+          </div>
+          <div class="field-group">
+            <label for="bl_janelas">Nº janelas</label>
+            <input type="number" step="1" min="0" id="bl_janelas" value="0">
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="bl_desperdicio">Desperdício (%)</label>
+          <input type="number" step="1" min="0" id="bl_desperdicio" value="8">
+        </div>
+        <button type="submit" class="btn-primary">Calcular</button>
+      </form>
+      <div class="result-box" id="resBlocos" hidden></div>
+    </section>
+
+    <!-- ---------- CALC: CONCRETO ---------- -->
+    <section class="screen" id="screen-calc-concreto" data-title="Calculadora de Concreto">
+      <form class="calc-form" id="formConcreto" autocomplete="off">
+        <div class="field-group">
+          <label for="cc_tipo">Elemento</label>
+          <select id="cc_tipo">
+            <option value="laje">Laje</option>
+            <option value="viga">Viga</option>
+            <option value="pilar">Pilar</option>
+            <option value="sapata">Sapata</option>
+          </select>
+        </div>
+        <div id="cc_campos_laje" class="dyn-fields">
+          <div class="field-row">
+            <div class="field-group"><label for="cc_laje_comp">Comprimento (m)</label><input type="number" step="0.01" min="0" id="cc_laje_comp"></div>
+            <div class="field-group"><label for="cc_laje_larg">Largura (m)</label><input type="number" step="0.01" min="0" id="cc_laje_larg"></div>
+            <div class="field-group"><label for="cc_laje_esp">Espessura (cm)</label><input type="number" step="0.1" min="0" id="cc_laje_esp" value="10"></div>
+          </div>
+        </div>
+        <div id="cc_campos_viga" class="dyn-fields" hidden>
+          <div class="field-row">
+            <div class="field-group"><label for="cc_viga_comp">Comprimento (m)</label><input type="number" step="0.01" min="0" id="cc_viga_comp"></div>
+            <div class="field-group"><label for="cc_viga_larg">Largura (cm)</label><input type="number" step="0.1" min="0" id="cc_viga_larg" value="20"></div>
+            <div class="field-group"><label for="cc_viga_alt">Altura (cm)</label><input type="number" step="0.1" min="0" id="cc_viga_alt" value="40"></div>
+          </div>
+          <div class="field-group"><label for="cc_viga_qtd">Quantidade de vigas</label><input type="number" step="1" min="1" id="cc_viga_qtd" value="1"></div>
+        </div>
+        <div id="cc_campos_pilar" class="dyn-fields" hidden>
+          <div class="field-row">
+            <div class="field-group"><label for="cc_pilar_larg">Largura (cm)</label><input type="number" step="0.1" min="0" id="cc_pilar_larg" value="20"></div>
+            <div class="field-group"><label for="cc_pilar_prof">Profundidade (cm)</label><input type="number" step="0.1" min="0" id="cc_pilar_prof" value="20"></div>
+            <div class="field-group"><label for="cc_pilar_alt">Altura (m)</label><input type="number" step="0.01" min="0" id="cc_pilar_alt"></div>
+          </div>
+          <div class="field-group"><label for="cc_pilar_qtd">Quantidade de pilares</label><input type="number" step="1" min="1" id="cc_pilar_qtd" value="1"></div>
+        </div>
+        <div id="cc_campos_sapata" class="dyn-fields" hidden>
+          <div class="field-row">
+            <div class="field-group"><label for="cc_sapata_comp">Comprimento (m)</label><input type="number" step="0.01" min="0" id="cc_sapata_comp"></div>
+            <div class="field-group"><label for="cc_sapata_larg">Largura (m)</label><input type="number" step="0.01" min="0" id="cc_sapata_larg"></div>
+            <div class="field-group"><label for="cc_sapata_alt">Altura (cm)</label><input type="number" step="0.1" min="0" id="cc_sapata_alt" value="30"></div>
+          </div>
+          <div class="field-group"><label for="cc_sapata_qtd">Quantidade de sapatas</label><input type="number" step="1" min="1" id="cc_sapata_qtd" value="1"></div>
+        </div>
+        <div class="field-group">
+          <label for="cc_traco">Traço (cimento:areia:brita)</label>
+          <select id="cc_traco">
+            <option value="1:2:3">1:2:3 (uso geral)</option>
+            <option value="1:2:2">1:2:2 (mais resistente)</option>
+            <option value="1:3:3">1:3:3 (menos resistente)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">Calcular</button>
+      </form>
+      <p class="note-text">Os valores de cimento/areia/brita são estimativas e podem variar conforme o traço e a obra real.</p>
+      <div class="result-box" id="resConcreto" hidden></div>
+    </section>
+
+    <!-- ---------- CALC: ARGAMASSA ---------- -->
+    <section class="screen" id="screen-calc-argamassa" data-title="Calculadora de Argamassa">
+      <form class="calc-form" id="formArgamassa" autocomplete="off">
+        <div class="field-group">
+          <label for="ag_tipo">Finalidade</label>
+          <select id="ag_tipo">
+            <option value="assentamento">Assentamento</option>
+            <option value="reboco">Reboco</option>
+            <option value="contrapiso">Contrapiso</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="ag_area">Área (m²)</label>
+            <input type="number" step="0.01" min="0" id="ag_area" required>
+          </div>
+          <div class="field-group">
+            <label for="ag_espessura">Espessura (cm)</label>
+            <input type="number" step="0.1" min="0" id="ag_espessura" value="2">
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="ag_traco">Traço (cimento:areia)</label>
+          <select id="ag_traco">
+            <option value="1:3">1:3</option>
+            <option value="1:4">1:4</option>
+            <option value="1:5">1:5</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">Calcular</button>
+      </form>
+      <div class="result-box" id="resArgamassa" hidden></div>
+    </section>
+
+    <!-- ---------- MATERIAIS ---------- -->
+    <section class="screen" id="screen-materiais">
+      <div class="toolbar-row">
+        <input type="search" id="materialSearch" class="search-input" placeholder="Pesquisar por nome ou categoria...">
+        <button class="btn-icon-round" id="btnAddMaterial" aria-label="Adicionar material">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="list-container" id="materialList"></div>
+      <div class="empty-state" id="materialEmpty" hidden>
+        <p>Nenhum material cadastrado ainda.</p>
+        <p class="empty-sub">Toque em "+" para adicionar cimento, areia, blocos, tinta e outros.</p>
+      </div>
+    </section>
+
+    <!-- ---------- ORÇAMENTO ---------- -->
+    <section class="screen" id="screen-orcamento">
+      <div class="budget-summary-card" id="budgetSummaryCard"></div>
+      <div class="toolbar-row">
+        <h3 class="section-heading section-heading-flush">Itens do orçamento</h3>
+        <button class="btn-icon-round" id="btnAddBudgetItem" aria-label="Adicionar item">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="list-container" id="budgetList"></div>
+      <div class="empty-state" id="budgetEmpty" hidden>
+        <p>Nenhum item no orçamento.</p>
+        <p class="empty-sub">Adicione materiais para montar o custo da obra.</p>
+      </div>
+      <div class="budget-extra-card">
+        <h4>Custos adicionais</h4>
+        <div class="field-group">
+          <label for="bg_mao_obra">Mão de obra (MT)</label>
+          <input type="number" step="0.01" min="0" id="bg_mao_obra" value="0">
+        </div>
+        <div class="field-group">
+          <label for="bg_transporte">Transporte (MT)</label>
+          <input type="number" step="0.01" min="0" id="bg_transporte" value="0">
+        </div>
+        <div class="field-group">
+          <label for="bg_outros">Outros custos (MT)</label>
+          <input type="number" step="0.01" min="0" id="bg_outros" value="0">
+        </div>
+        <div class="field-group">
+          <label for="bg_desconto">Desconto (MT)</label>
+          <input type="number" step="0.01" min="0" id="bg_desconto" value="0">
+        </div>
+      </div>
+      <button class="btn-secondary" id="btnLimparOrcamento">Limpar orçamento atual</button>
+    </section>
+
+    <!-- ---------- PROJETOS ---------- -->
+    <section class="screen" id="screen-projetos">
+      <div class="toolbar-row">
+        <h3 class="section-heading section-heading-flush">Meus projetos</h3>
+        <button class="btn-icon-round" id="btnAddProjeto" aria-label="Novo projeto">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="list-container" id="projetoList"></div>
+      <div class="empty-state" id="projetoEmpty" hidden>
+        <p>Nenhum projeto criado.</p>
+        <p class="empty-sub">Crie um projeto para organizar orçamento e cálculos de uma obra.</p>
+      </div>
+    </section>
+
+    <!-- ---------- DETALHE DO PROJETO ---------- -->
+    <section class="screen" id="screen-projeto-detalhe" data-title="Projeto">
+      <div class="project-detail-card" id="projetoDetalheInfo"></div>
+      <div class="project-detail-actions">
+        <button class="btn-secondary" id="btnEditarProjeto">Editar dados</button>
+        <button class="btn-secondary" id="btnDuplicarProjeto">Duplicar</button>
+        <button class="btn-danger-outline" id="btnExcluirProjeto">Excluir</button>
+      </div>
+      <h4 class="subsection-heading">Orçamento salvo no projeto</h4>
+      <div class="list-container" id="projetoOrcamentoList"></div>
+      <p class="empty-sub" id="projetoOrcamentoEmpty">Nenhum orçamento salvo neste projeto ainda. Vá em Orçamento e toque em "Salvar no projeto".</p>
+      <h4 class="subsection-heading">Cálculos salvos no projeto</h4>
+      <div class="list-container" id="projetoCalculosList"></div>
+      <p class="empty-sub" id="projetoCalculosEmpty">Nenhum cálculo salvo neste projeto ainda.</p>
+    </section>
+
+    <!-- ---------- CONFIGURAÇÕES ---------- -->
+    <section class="screen" id="screen-config" data-title="Configurações">
+      <h3 class="section-heading">Moeda</h3>
+      <p class="note-text" style="margin-top:-6px;">Escolha a moeda usada em todos os valores do aplicativo (materiais, orçamento, mão de obra, transporte e totais). A troca não converte valores já cadastrados, apenas muda o símbolo de apresentação.</p>
+      <div class="currency-list" id="currencyList"></div>
+    </section>
+
+    <!-- ---------- HISTÓRICO ---------- -->
+    <section class="screen" id="screen-historico" data-title="Histórico de cálculos">
+      <div class="list-container" id="historicoList"></div>
+      <div class="empty-state" id="historicoEmpty" hidden>
+        <p>Nenhum cálculo no histórico.</p>
+        <p class="empty-sub">Seus cálculos aparecerão aqui automaticamente.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== MENU INFERIOR ===================== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="nav-btn active" data-screen="screen-home">
+      <svg viewBox="0 0 24 24"><path d="M4 11 L12 4 L20 11 M6 10 v10 h12 v-10" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      <span>Início</span>
+    </button>
+    <button class="nav-btn" data-screen="screen-calculadoras">
+      <svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z M8 7h8 M8 11h2 M12 11h2 M16 11h0 M8 15h2 M12 15h2 M16 15h0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span>Calculadoras</span>
+    </button>
+    <button class="nav-btn" data-screen="screen-materiais">
+      <svg viewBox="0 0 24 24"><path d="M4 7l8-4 8 4-8 4-8-4Z M4 7v10l8 4 8-4V7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      <span>Materiais</span>
+    </button>
+    <button class="nav-btn" data-screen="screen-orcamento">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z M8 9h8M8 13h8M8 17h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span>Orçamento</span>
+    </button>
+    <button class="nav-btn" data-screen="screen-projetos">
+      <svg viewBox="0 0 24 24"><path d="M4 5h6l2 2h8v12H4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      <span>Projetos</span>
+    </button>
+  </nav>
+
+  <!-- ===================== TOASTS ===================== -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- ===================== MODAL GENÉRICO (confirmação) ===================== -->
+  <div class="modal-overlay" id="confirmModal" hidden>
+    <div class="modal-box">
+      <h3 id="confirmModalTitle">Confirmar</h3>
+      <p id="confirmModalText"></p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="confirmModalCancel">Cancelar</button>
+        <button class="btn-danger" id="confirmModalOk">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL MATERIAL ===================== -->
+  <div class="modal-overlay" id="materialModal" hidden>
+    <div class="modal-box">
+      <h3 id="materialModalTitle">Novo material</h3>
+      <form id="formMaterial" autocomplete="off">
+        <input type="hidden" id="mat_id">
+        <div class="field-group">
+          <label for="mat_nome">Nome</label>
+          <input type="text" id="mat_nome" required>
+        </div>
+        <div class="field-group">
+          <label for="mat_categoria">Categoria</label>
+          <select id="mat_categoria">
+            <option>Cimento</option><option>Areia</option><option>Brita</option>
+            <option>Blocos</option><option>Tijolos</option><option>Ferro</option>
+            <option>Tinta</option><option>Piso</option><option>Azulejo</option>
+            <option>Argamassa</option><option>Madeira</option><option>Tubos</option>
+            <option>Material elétrico</option><option selected>Outros</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="mat_unidade">Unidade</label>
+            <select id="mat_unidade">
+              <option>unidade</option><option>kg</option><option>saco</option>
+              <option>m</option><option>m²</option><option>m³</option>
+              <option>litro</option><option>mm</option><option>cm</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="mat_quantidade">Quantidade em estoque</label>
+            <input type="number" step="0.01" min="0" id="mat_quantidade" value="0">
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="mat_preco">Preço (MT)</label>
+          <input type="number" step="0.01" min="0" id="mat_preco" value="0" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="materialModalCancel">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL ITEM DE ORÇAMENTO ===================== -->
+  <div class="modal-overlay" id="budgetItemModal" hidden>
+    <div class="modal-box">
+      <h3 id="budgetModalTitle">Adicionar item</h3>
+      <form id="formBudgetItem" autocomplete="off">
+        <input type="hidden" id="bi_id">
+        <div class="field-group">
+          <label for="bi_material">Material</label>
+          <select id="bi_material"></select>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="bi_qtd">Quantidade</label>
+            <input type="number" step="0.01" min="0" id="bi_qtd" value="1" required>
+          </div>
+          <div class="field-group">
+            <label for="bi_unidade">Unidade</label>
+            <input type="text" id="bi_unidade" readonly>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="bi_preco">Preço unitário (MT)</label>
+          <input type="number" step="0.01" min="0" id="bi_preco" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="budgetModalCancel">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL PROJETO ===================== -->
+  <div class="modal-overlay" id="projetoModal" hidden>
+    <div class="modal-box">
+      <h3 id="projetoModalTitle">Novo projeto</h3>
+      <form id="formProjeto" autocomplete="off">
+        <input type="hidden" id="pj_id">
+        <div class="field-group">
+          <label for="pj_nome">Nome do projeto</label>
+          <input type="text" id="pj_nome" required>
+        </div>
+        <div class="field-group">
+          <label for="pj_cliente">Cliente</label>
+          <input type="text" id="pj_cliente">
+        </div>
+        <div class="field-group">
+          <label for="pj_local">Localização</label>
+          <input type="text" id="pj_local">
+        </div>
+        <div class="field-group">
+          <label for="pj_data">Data</label>
+          <input type="date" id="pj_data">
+        </div>
+        <div class="field-group">
+          <label for="pj_obs">Observações</label>
+          <textarea id="pj_obs" rows="3"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="projetoModalCancel">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   OBRAFÁCIL — LÓGICA DA APLICAÇÃO
+   100% JavaScript puro, sem frameworks. Dados em localStorage.
+   ========================================================= */
+(function(){
+'use strict';
+
+/* ---------------------------------------------------------
+   0. CHAVES DE ARMAZENAMENTO E ESTADO GLOBAL
+--------------------------------------------------------- */
+const LS = {
+  MATERIAIS: 'of_materiais',
+  BUDGET: 'of_budget',
+  BUDGET_EXTRA: 'of_budget_extra',
+  PROJETOS: 'of_projetos',
+  HISTORICO: 'of_historico',
+  CURRENT_PROJETO: 'of_current_projeto',
+  MOEDA: 'of_moeda'
+};
+
+const state = {
+  materiais: [],
+  budget: [],
+  budgetExtra: { maoObra:0, transporte:0, outros:0, desconto:0 },
+  projetos: [],
+  historico: [],
+  currentProjetoId: null,
+  navStack: ['screen-home'],
+  pendingConfirm: null,
+  editingProjetoParaAbrirDepoisDeSalvar: null
+};
+
+/* ---------------------------------------------------------
+   1. PERSISTÊNCIA (localStorage) — com tratamento de erro
+--------------------------------------------------------- */
+function lsGet(key, fallback){
+  try{
+    const raw = localStorage.getItem(key);
+    if(raw === null || raw === undefined) return fallback;
+    return JSON.parse(raw);
+  }catch(e){
+    console.error('Erro ao ler', key, e);
+    return fallback;
+  }
+}
+function lsSet(key, value){
+  try{
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  }catch(e){
+    console.error('Erro ao salvar', key, e);
+    showToast('Não foi possível salvar os dados neste dispositivo.', 'error');
+    return false;
+  }
+}
+
+function loadAll(){
+  state.materiais = lsGet(LS.MATERIAIS, []);
+  state.budget = lsGet(LS.BUDGET, []);
+  state.budgetExtra = lsGet(LS.BUDGET_EXTRA, { maoObra:0, transporte:0, outros:0, desconto:0 });
+  state.projetos = lsGet(LS.PROJETOS, []);
+  state.historico = lsGet(LS.HISTORICO, []);
+  state.currentProjetoId = lsGet(LS.CURRENT_PROJETO, null);
+  const moedaSalva = lsGet(LS.MOEDA, 'MZN');
+  APP_CONFIG.moeda = MOEDAS[moedaSalva] || MOEDAS.MZN;
+}
+function saveMoeda(codigo){ lsSet(LS.MOEDA, codigo); }
+
+function saveMateriais(){ lsSet(LS.MATERIAIS, state.materiais); }
+function saveBudget(){ lsSet(LS.BUDGET, state.budget); }
+function saveBudgetExtra(){ lsSet(LS.BUDGET_EXTRA, state.budgetExtra); }
+function saveProjetos(){ lsSet(LS.PROJETOS, state.projetos); }
+function saveHistorico(){ lsSet(LS.HISTORICO, state.historico); }
+function saveCurrentProjeto(){ lsSet(LS.CURRENT_PROJETO, state.currentProjetoId); }
+
+/* ---------------------------------------------------------
+   2. UTILITÁRIOS
+--------------------------------------------------------- */
+// Configuração simples de moeda. Para trocar a moeda do app inteiro,
+// basta alterar "simbolo" aqui (ex: 'Kz', 'R$', '€', 'MT').
+// Moedas suportadas. Para adicionar outra moeda no futuro, basta acrescentar
+// uma entrada aqui — o resto do app já usa APP_CONFIG.moeda automaticamente.
+const MOEDAS = {
+  MZN: { codigo:'MZN', simbolo:'MT', antesDoValor:true, bandeira:'🇲🇿', nome:'Moçambique', sub:'Metical (MT)' },
+  BRL: { codigo:'BRL', simbolo:'R$', antesDoValor:true, bandeira:'🇧🇷', nome:'Brasil', sub:'Real (R$)' },
+  EUR: { codigo:'EUR', simbolo:'€', antesDoValor:true, bandeira:'🇵🇹', nome:'Portugal', sub:'Euro (€)' }
+};
+const APP_CONFIG = {
+  moeda: MOEDAS.MZN
+};
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+function fmtMoeda(n){
+  n = Number(n)||0;
+  const valor = n.toLocaleString('pt-PT', { minimumFractionDigits:2, maximumFractionDigits:2 });
+  return APP_CONFIG.moeda.antesDoValor ? (APP_CONFIG.moeda.simbolo + ' ' + valor) : (valor + ' ' + APP_CONFIG.moeda.simbolo);
+}
+function fmtKz(n){ return fmtMoeda(n); } // mantido por compatibilidade com o restante do código
+function fmtNum(n, dec){
+  n = Number(n)||0;
+  dec = dec===undefined?2:dec;
+  return n.toLocaleString('pt-PT', { minimumFractionDigits:dec, maximumFractionDigits:dec });
+}
+function num(v){ const n = parseFloat(v); return isNaN(n) ? 0 : n; }
+function clamp0(n){ return n < 0 ? 0 : n; }
+function esc(str){
+  return String(str===undefined||str===null?'':str).replace(/[&<>"']/g, function(c){
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+  });
+}
+function fmtData(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  if(isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('pt-PT') + ' ' + d.toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit'});
+}
+
+/* ---------------------------------------------------------
+   3. TOASTS
+--------------------------------------------------------- */
+function showToast(msg, type){
+  type = type || 'info';
+  const container = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  container.appendChild(t);
+  setTimeout(function(){
+    t.style.transition = 'opacity .25s ease';
+    t.style.opacity = '0';
+    setTimeout(function(){ t.remove(); }, 260);
+  }, 2400);
+}
+
+/* ---------------------------------------------------------
+   4. MODAL DE CONFIRMAÇÃO GENÉRICO
+--------------------------------------------------------- */
+const confirmModal = document.getElementById('confirmModal');
+const confirmModalTitle = document.getElementById('confirmModalTitle');
+const confirmModalText = document.getElementById('confirmModalText');
+
+function askConfirm(title, text, onOk){
+  confirmModalTitle.textContent = title;
+  confirmModalText.textContent = text;
+  state.pendingConfirm = onOk;
+  confirmModal.hidden = false;
+}
+document.getElementById('confirmModalCancel').addEventListener('click', function(){
+  confirmModal.hidden = true;
+  state.pendingConfirm = null;
+});
+document.getElementById('confirmModalOk').addEventListener('click', function(){
+  const fn = state.pendingConfirm;
+  confirmModal.hidden = true;
+  state.pendingConfirm = null;
+  if(typeof fn === 'function') fn();
+});
+
+/* ---------------------------------------------------------
+   5. NAVEGAÇÃO ENTRE TELAS
+--------------------------------------------------------- */
+const ROOT_MAP = {
+  'screen-home':'screen-home',
+  'screen-calculadoras':'screen-calculadoras',
+  'screen-calc-paredes':'screen-calculadoras',
+  'screen-calc-piso':'screen-calculadoras',
+  'screen-calc-pintura':'screen-calculadoras',
+  'screen-calc-blocos':'screen-calculadoras',
+  'screen-calc-concreto':'screen-calculadoras',
+  'screen-calc-argamassa':'screen-calculadoras',
+  'screen-materiais':'screen-materiais',
+  'screen-orcamento':'screen-orcamento',
+  'screen-projetos':'screen-projetos',
+  'screen-projeto-detalhe':'screen-projetos',
+  'screen-historico': null,
+  'screen-config': null
+};
+const MAIN_TITLES = {
+  'screen-home':'ObraFácil',
+  'screen-calculadoras':'Calculadoras',
+  'screen-materiais':'Materiais',
+  'screen-orcamento':'Orçamento',
+  'screen-projetos':'Projetos'
+};
+
+const headerTitle = document.getElementById('headerTitle');
+const headerLogo = document.getElementById('headerLogo');
+const btnBack = document.getElementById('btnBack');
+const btnHistorico = document.getElementById('btnHistorico');
+const btnConfig = document.getElementById('btnConfig');
+
+function renderScreenExtras(screenId){
+  if(screenId === 'screen-home') renderHomeStats();
+  if(screenId === 'screen-materiais') renderMateriais();
+  if(screenId === 'screen-orcamento') renderOrcamento();
+  if(screenId === 'screen-projetos') renderProjetos();
+  if(screenId === 'screen-historico') renderHistorico();
+  if(screenId === 'screen-projeto-detalhe') renderProjetoDetalhe();
+  if(screenId === 'screen-config') renderConfig();
+}
+
+function applyScreen(screenId){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  const el = document.getElementById(screenId);
+  if(!el){ return; }
+  el.classList.add('active');
+
+  const isMain = !!MAIN_TITLES[screenId];
+  headerTitle.textContent = isMain ? MAIN_TITLES[screenId] : (el.dataset.title || 'ObraFácil');
+  headerLogo.style.display = screenId === 'screen-home' ? 'flex' : 'none';
+  btnBack.hidden = isMain;
+  btnHistorico.hidden = (screenId === 'screen-historico');
+  btnConfig.hidden = (screenId === 'screen-config');
+
+  const rootTab = ROOT_MAP[screenId];
+  document.querySelectorAll('.nav-btn').forEach(function(btn){
+    btn.classList.toggle('active', btn.dataset.screen === rootTab);
+  });
+
+  renderScreenExtras(screenId);
+  document.getElementById('mainContent').scrollTop = 0;
+}
+
+function navigateTo(screenId, opts){
+  opts = opts || {};
+  if(opts.reset){
+    state.navStack = [screenId];
+  } else {
+    state.navStack.push(screenId);
+  }
+  applyScreen(screenId);
+}
+
+function goBack(){
+  if(state.navStack.length > 1){
+    state.navStack.pop();
+    applyScreen(state.navStack[state.navStack.length-1]);
+  } else {
+    applyScreen('screen-home');
+  }
+}
+
+btnBack.addEventListener('click', goBack);
+btnHistorico.addEventListener('click', function(){ navigateTo('screen-historico'); });
+btnConfig.addEventListener('click', function(){ navigateTo('screen-config'); });
+
+document.querySelectorAll('.nav-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    navigateTo(btn.dataset.screen, { reset:true });
+  });
+});
+document.querySelectorAll('.calc-card[data-target]').forEach(function(btn){
+  btn.addEventListener('click', function(){ navigateTo(btn.dataset.target); });
+});
+
+// Espelha os cartões da Home na lista "Calculadoras"
+(function mirrorCalcGrid(){
+  const home = document.getElementById('homeCalcGrid');
+  const list = document.getElementById('calcListGrid');
+  list.innerHTML = home.innerHTML;
+  list.querySelectorAll('.calc-card[data-target]').forEach(function(btn){
+    btn.addEventListener('click', function(){ navigateTo(btn.dataset.target); });
+  });
+})();
+
+/* ---------------------------------------------------------
+   6. HISTÓRICO DE CÁLCULOS
+--------------------------------------------------------- */
+function addHistorico(tipo, titulo, resumo, inputs){
+  const entry = { id: uid(), tipo:tipo, titulo:titulo, resumo:resumo, inputs:inputs, data: new Date().toISOString() };
+  state.historico.unshift(entry);
+  if(state.historico.length > 100) state.historico.length = 100;
+  saveHistorico();
+}
+
+function renderHistorico(){
+  const list = document.getElementById('historicoList');
+  const empty = document.getElementById('historicoEmpty');
+  list.innerHTML = '';
+  if(state.historico.length === 0){ empty.hidden = false; return; }
+  empty.hidden = true;
+  state.historico.forEach(function(h){
+    const row = document.createElement('div');
+    row.className = 'list-item';
+    row.innerHTML =
+      '<div class="list-item-main">' +
+        '<div class="list-item-title">' + esc(h.titulo) + '</div>' +
+        '<div class="list-item-sub">' + esc(h.resumo) + '</div>' +
+        '<div class="list-item-sub">' + fmtData(h.data) + '</div>' +
+      '</div>' +
+      '<div class="list-item-actions">' +
+        '<button class="icon-btn-sm" data-repetir="' + h.id + '" aria-label="Repetir">' +
+          '<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 3 6.7M3 19v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</button>' +
+        '<button class="icon-btn-sm danger" data-excluir-hist="' + h.id + '" aria-label="Excluir">' +
+          '<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V5h6v2M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</button>' +
+      '</div>';
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('historicoList').addEventListener('click', function(e){
+  const repBtn = e.target.closest('[data-repetir]');
+  const delBtn = e.target.closest('[data-excluir-hist]');
+  if(repBtn){
+    const h = state.historico.find(function(x){ return x.id === repBtn.dataset.repetir; });
+    if(h) repetirCalculo(h);
+  }
+  if(delBtn){
+    askConfirm('Excluir do histórico', 'Deseja excluir este cálculo do histórico?', function(){
+      state.historico = state.historico.filter(function(x){ return x.id !== delBtn.dataset.excluirHist; });
+      saveHistorico();
+      renderHistorico();
+      showToast('Removido do histórico.', 'success');
+    });
+  }
+});
+
+function repetirCalculo(h){
+  const screenByTipo = {
+    paredes:'screen-calc-paredes', piso:'screen-calc-piso', pintura:'screen-calc-pintura',
+    blocos:'screen-calc-blocos', concreto:'screen-calc-concreto', argamassa:'screen-calc-argamassa'
+  };
+  const screenId = screenByTipo[h.tipo];
+  if(!screenId) return;
+  Object.keys(h.inputs || {}).forEach(function(fieldId){
+    const el = document.getElementById(fieldId);
+    if(el) el.value = h.inputs[fieldId];
+  });
+  if(h.tipo === 'concreto' && h.inputs.cc_tipo) toggleConcretoCampos(h.inputs.cc_tipo);
+  if(h.tipo === 'blocos' && h.inputs.bl_tamanho) document.getElementById('bl_campo_personalizado').hidden = (h.inputs.bl_tamanho !== 'personalizado');
+  navigateTo(screenId, { reset:true });
+  showToast('Valores carregados. Toque em Calcular.', 'info');
+}
+
+/* ---------------------------------------------------------
+   7.1 CONFIGURAÇÕES — MOEDA
+--------------------------------------------------------- */
+function renderConfig(){
+  const list = document.getElementById('currencyList');
+  list.innerHTML = '';
+  Object.keys(MOEDAS).forEach(function(codigo){
+    const m = MOEDAS[codigo];
+    const isSelected = APP_CONFIG.moeda.codigo === codigo;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'currency-option' + (isSelected ? ' selected' : '');
+    btn.dataset.moeda = codigo;
+    btn.innerHTML =
+      '<span class="currency-flag">' + m.bandeira + '</span>' +
+      '<span class="currency-option-main">' +
+        '<span class="currency-option-title">' + esc(m.nome) + '</span>' +
+        '<span class="currency-option-sub">' + esc(m.sub) + '</span>' +
+      '</span>' +
+      '<span class="currency-option-check">' +
+        '<svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '</span>';
+    list.appendChild(btn);
+  });
+}
+document.getElementById('currencyList').addEventListener('click', function(e){
+  const btn = e.target.closest('[data-moeda]');
+  if(!btn) return;
+  aplicarMoeda(btn.dataset.moeda);
+});
+
+function aplicarMoeda(codigo){
+  const m = MOEDAS[codigo];
+  if(!m) return;
+  APP_CONFIG.moeda = m;
+  saveMoeda(codigo);
+  renderConfig();
+  // Atualiza, em tempo real, todas as telas que mostram valores monetários
+  renderHomeStats();
+  renderMateriais();
+  renderOrcamento();
+  if(state.currentProjetoId) renderProjetoDetalhe();
+  showToast('Moeda alterada para ' + m.nome + ' (' + m.simbolo + ').', 'success');
+}
+
+/* ---------------------------------------------------------
+   7. PROJETO ATIVO — usado para "guardar no projeto"
+--------------------------------------------------------- */
+function nomeProjetoAtivo(){
+  const p = state.projetos.find(function(x){ return x.id === state.currentProjetoId; });
+  return p ? p.nome : null;
+}
+function salvarCalculoNoProjetoAtivo(tipo, titulo, resumo, resultado){
+  const p = state.projetos.find(function(x){ return x.id === state.currentProjetoId; });
+  if(!p){ showToast('Nenhum projeto ativo. Abra um projeto em "Projetos".', 'error'); return; }
+  p.calculos = p.calculos || [];
+  p.calculos.unshift({ id: uid(), tipo:tipo, titulo:titulo, resumo:resumo, resultado:resultado, data: new Date().toISOString() });
+  saveProjetos();
+  showToast('Cálculo guardado no projeto "' + p.nome + '".', 'success');
+}
+
+/* ===========================================================
+   8. CALCULADORAS
+=========================================================== */
+
+/* ---------- 8.1 PAREDES ---------- */
+document.getElementById('formParedes').addEventListener('submit', function(e){
+  e.preventDefault();
+  const comprimento = num(document.getElementById('pd_comprimento').value);
+  const altura = num(document.getElementById('pd_altura').value);
+  const qtdPortas = num(document.getElementById('pd_qtd_portas').value);
+  const largPorta = num(document.getElementById('pd_largura_porta').value);
+  const altPorta = num(document.getElementById('pd_altura_porta').value);
+  const qtdJanelas = num(document.getElementById('pd_qtd_janelas').value);
+  const largJanela = num(document.getElementById('pd_largura_janela').value);
+  const altJanela = num(document.getElementById('pd_altura_janela').value);
+  const tamanhoBloco = document.getElementById('pd_tamanho_bloco').value;
+  const desperdicio = num(document.getElementById('pd_desperdicio').value);
+
+  if(comprimento <= 0){ showToast('Digite um comprimento válido.', 'error'); return; }
+  if(altura <= 0){ showToast('Digite uma altura válida.', 'error'); return; }
+
+  const areaTotal = comprimento * altura;
+  const areaPortas = qtdPortas * largPorta * altPorta;
+  const areaJanelas = qtdJanelas * largJanela * altJanela;
+  const areaLiquida = clamp0(areaTotal - areaPortas - areaJanelas);
+
+  const blocosBase = areaLiquida * BLOCOS_POR_M2;
+  const blocosComDesperdicio = Math.ceil(blocosBase * (1 + desperdicio/100));
+
+  // Estimativa de argamassa de assentamento (traço 1:3, camada de referência de 2cm)
+  const tracoAssent = TRACO_ARGAMASSA['1:3'];
+  const volumeArgamassa = areaLiquida * 0.02;
+  const cimentoArgamassaKg = volumeArgamassa * tracoAssent.cimentoKgM3;
+  const cimentoArgamassaSacos = Math.ceil(cimentoArgamassaKg/50);
+
+  const html =
+    '<h4>Resultado</h4>' +
+    row('Área total da parede', fmtNum(areaTotal) + ' m²') +
+    row('Área de portas', fmtNum(areaPortas) + ' m²') +
+    row('Área de janelas', fmtNum(areaJanelas) + ' m²') +
+    row('Área líquida', fmtNum(areaLiquida) + ' m²') +
+    row('Bloco selecionado', tamanhoBloco + ' cm') +
+    row('Quantidade de blocos', fmtNum(blocosBase,0)) +
+    row('Blocos com desperdício (' + fmtNum(desperdicio,0) + '%)', fmtNum(blocosComDesperdicio,0)) +
+    row('Argamassa de assentamento (estimativa)', fmtNum(volumeArgamassa,3) + ' m³ (~' + cimentoArgamassaSacos + ' sacos de cimento)', true) +
+    '<p class="note-text" style="color:rgba(255,255,255,.6);margin:8px 0 0;">Estimativa de argamassa baseada em traço 1:3; o consumo real varia conforme a espessura da junta e a obra.</p>' +
+    saveToProjectBtn('paredes');
+  const box = document.getElementById('resParedes');
+  box.innerHTML = html; box.hidden = false;
+
+  const inputs = { pd_comprimento:comprimento, pd_altura:altura, pd_qtd_portas:qtdPortas, pd_largura_porta:largPorta, pd_altura_porta:altPorta, pd_qtd_janelas:qtdJanelas, pd_largura_janela:largJanela, pd_altura_janela:altJanela, pd_tamanho_bloco:tamanhoBloco, pd_desperdicio:desperdicio };
+  const resumo = comprimento + 'm x ' + altura + 'm — líquida ' + fmtNum(areaLiquida) + ' m² — ' + blocosComDesperdicio + ' blocos';
+  addHistorico('paredes', 'Calculadora de Paredes', resumo, inputs);
+  wireSaveToProjectBtn(box, 'paredes', 'Calculadora de Paredes', resumo, { areaTotal:areaTotal, areaPortas:areaPortas, areaJanelas:areaJanelas, areaLiquida:areaLiquida, blocosComDesperdicio:blocosComDesperdicio, volumeArgamassa:volumeArgamassa });
+});
+
+/* ---------- 8.2 PISO ---------- */
+document.getElementById('formPiso').addEventListener('submit', function(e){
+  e.preventDefault();
+  const comprimento = num(document.getElementById('ps_comprimento').value);
+  const largura = num(document.getElementById('ps_largura').value);
+  const pecaComprimento = num(document.getElementById('ps_peca_comprimento').value);
+  const pecaLargura = num(document.getElementById('ps_peca_largura').value);
+  const pecasCaixa = Math.max(1, num(document.getElementById('ps_pecas_caixa').value));
+  const precoCaixa = num(document.getElementById('ps_preco_caixa').value);
+  const desperdicio = num(document.getElementById('ps_desperdicio').value);
+
+  if(comprimento<=0){ showToast('Digite um comprimento válido.', 'error'); return; }
+  if(largura<=0){ showToast('Digite uma largura válida.', 'error'); return; }
+  if(pecaComprimento<=0 || pecaLargura<=0){ showToast('Digite as medidas da peça corretamente.', 'error'); return; }
+
+  const areaAmbiente = comprimento*largura;
+  const areaPeca = (pecaComprimento/100) * (pecaLargura/100);
+  const areaComPerda = areaAmbiente * (1 + desperdicio/100);
+  const qtdPecasSemPerda = Math.ceil(areaAmbiente / areaPeca);
+  const qtdPecas = Math.ceil(areaComPerda / areaPeca);
+  const qtdCaixas = Math.ceil(qtdPecas / pecasCaixa);
+  const custo = qtdCaixas * precoCaixa;
+
+  const html =
+    '<h4>Resultado</h4>' +
+    row('Área do ambiente', fmtNum(areaAmbiente) + ' m²') +
+    row('Área de cada peça', fmtNum(areaPeca,4) + ' m²') +
+    row('Desperdício recomendado', fmtNum(desperdicio,0) + ' %') +
+    row('Quantidade de peças', fmtNum(qtdPecasSemPerda,0)) +
+    row('Quantidade com desperdício', fmtNum(qtdPecas,0)) +
+    row('Quantidade de caixas', fmtNum(qtdCaixas,0)) +
+    row('Custo estimado', fmtKz(custo), true) +
+    saveToProjectBtn('piso');
+  const box = document.getElementById('resPiso');
+  box.innerHTML = html; box.hidden = false;
+
+  const inputs = { ps_comprimento:comprimento, ps_largura:largura, ps_peca_comprimento:pecaComprimento, ps_peca_largura:pecaLargura, ps_pecas_caixa:pecasCaixa, ps_preco_caixa:precoCaixa, ps_desperdicio:desperdicio };
+  const resumo = fmtNum(areaAmbiente)+' m² — '+qtdCaixas+' caixas — '+fmtKz(custo);
+  addHistorico('piso', 'Calculadora de Piso', resumo, inputs);
+  wireSaveToProjectBtn(box, 'piso', 'Calculadora de Piso', resumo, { areaAmbiente:areaAmbiente, areaPeca:areaPeca, qtdPecas:qtdPecas, qtdCaixas:qtdCaixas, custo:custo });
+});
+
+/* ---------- 8.3 PINTURA ---------- */
+document.getElementById('formPintura').addEventListener('submit', function(e){
+  e.preventDefault();
+  const comprimento = num(document.getElementById('pt_comprimento').value);
+  const largura = num(document.getElementById('pt_largura').value);
+  const altura = num(document.getElementById('pt_altura').value);
+  const portas = num(document.getElementById('pt_portas').value);
+  const janelas = num(document.getElementById('pt_janelas').value);
+  const rendimento = Math.max(0.1, num(document.getElementById('pt_rendimento').value));
+  const demao = Math.max(1, num(document.getElementById('pt_demao').value));
+  const litrosLata = Math.max(0.1, num(document.getElementById('pt_litros_lata').value));
+  const precoLata = num(document.getElementById('pt_preco_lata').value);
+
+  if(comprimento<=0){ showToast('Digite um comprimento válido.', 'error'); return; }
+  if(largura<=0){ showToast('Digite uma largura válida.', 'error'); return; }
+  if(altura<=0){ showToast('Digite uma altura válida.', 'error'); return; }
+
+  const areaParedes = (comprimento+largura)*2*altura;
+  const areaDescontada = portas*1.6 + janelas*1.44;
+  const areaFinal = clamp0(areaParedes - areaDescontada) * demao;
+  const litros = areaFinal / rendimento;
+  const latas = Math.ceil(litros / litrosLata);
+  const custo = latas * precoLata;
+
+  const html =
+    '<h4>Resultado</h4>' +
+    row('Área das paredes', fmtNum(areaParedes) + ' m²') +
+    row('Área descontada (portas/janelas)', fmtNum(areaDescontada) + ' m²') +
+    row('Área final (com demãos)', fmtNum(areaFinal) + ' m²') +
+    row('Litros de tinta necessários', fmtNum(litros) + ' L') +
+    row('Quantidade de latas', fmtNum(latas,0)) +
+    row('Custo estimado', fmtKz(custo), true) +
+    saveToProjectBtn('pintura');
+  const box = document.getElementById('resPintura');
+  box.innerHTML = html; box.hidden = false;
+
+  const inputs = { pt_comprimento:comprimento, pt_largura:largura, pt_altura:altura, pt_portas:portas, pt_janelas:janelas, pt_rendimento:rendimento, pt_demao:demao, pt_litros_lata:litrosLata, pt_preco_lata:precoLata };
+  const resumo = fmtNum(areaFinal)+' m² — '+latas+' lata(s) — '+fmtKz(custo);
+  addHistorico('pintura', 'Calculadora de Pintura', resumo, inputs);
+  wireSaveToProjectBtn(box, 'pintura', 'Calculadora de Pintura', resumo, { areaParedes:areaParedes, areaFinal:areaFinal, litros:litros, latas:latas, custo:custo });
+});
+
+/* ---------- 8.4 BLOCOS ---------- */
+const BLOCOS_POR_M2 = 12.5; // constante aproximada independente da espessura (afeta antes a argamassa/concreto, não a contagem por face)
+document.getElementById('bl_tamanho').addEventListener('change', function(){
+  document.getElementById('bl_campo_personalizado').hidden = (this.value !== 'personalizado');
+});
+document.getElementById('formBlocos').addEventListener('submit', function(e){
+  e.preventDefault();
+  const tamanhoSel = document.getElementById('bl_tamanho').value;
+  const tamanhoLabel = tamanhoSel === 'personalizado' ? num(document.getElementById('bl_tamanho_custom').value) : tamanhoSel;
+  const comprimento = num(document.getElementById('bl_comprimento').value);
+  const altura = num(document.getElementById('bl_altura').value);
+  const qtdParedes = Math.max(1, num(document.getElementById('bl_qtd_paredes').value));
+  const portas = num(document.getElementById('bl_portas').value);
+  const janelas = num(document.getElementById('bl_janelas').value);
+  const desperdicio = num(document.getElementById('bl_desperdicio').value);
+
+  if(comprimento<=0){ showToast('Digite um comprimento válido.', 'error'); return; }
+  if(altura<=0){ showToast('Digite uma altura válida.', 'error'); return; }
+
+  const areaBruta = comprimento*altura*qtdParedes;
+  const areaDescontada = portas*1.6 + janelas*1.44;
+  const areaLiquida = clamp0(areaBruta - areaDescontada);
+  const blocosBase = areaLiquida * BLOCOS_POR_M2;
+  const blocosFinal = Math.ceil(blocosBase * (1+desperdicio/100));
+
+  const html =
+    '<h4>Resultado</h4>' +
+    row('Bloco selecionado', tamanhoLabel + ' cm') +
+    row('Área líquida total', fmtNum(areaLiquida) + ' m²') +
+    row('Blocos por m² (referência)', fmtNum(BLOCOS_POR_M2)) +
+    row('Quantidade estimada de blocos', fmtNum(blocosFinal,0), true) +
+    saveToProjectBtn('blocos');
+  const box = document.getElementById('resBlocos');
+  box.innerHTML = html; box.hidden = false;
+
+  const inputs = { bl_tamanho:tamanhoSel, bl_tamanho_custom:document.getElementById('bl_tamanho_custom').value, bl_comprimento:comprimento, bl_altura:altura, bl_qtd_paredes:qtdParedes, bl_portas:portas, bl_janelas:janelas, bl_desperdicio:desperdicio };
+  const resumo = 'Bloco '+tamanhoLabel+'cm — '+blocosFinal+' unidades';
+  addHistorico('blocos', 'Calculadora de Blocos', resumo, inputs);
+  wireSaveToProjectBtn(box, 'blocos', 'Calculadora de Blocos', resumo, { areaLiquida:areaLiquida, blocosFinal:blocosFinal, tamanho:tamanhoLabel });
+});
+
+/* ---------- 8.5 CONCRETO ---------- */
+const TRACO_CONCRETO = {
+  '1:2:3': { cimentoKgM3:320, areiaM3:0.50, britaM3:0.80 },
+  '1:2:2': { cimentoKgM3:350, areiaM3:0.45, britaM3:0.65 },
+  '1:3:3': { cimentoKgM3:280, areiaM3:0.60, britaM3:0.85 }
+};
+function toggleConcretoCampos(tipo){
+  ['laje','viga','pilar','sapata'].forEach(function(t){
+    document.getElementById('cc_campos_'+t).hidden = (t !== tipo);
+  });
+}
+document.getElementById('cc_tipo').addEventListener('change', function(){ toggleConcretoCampos(this.value); });
+toggleConcretoCampos('laje');
+
+document.getElementById('formConcreto').addEventListener('submit', function(e){
+  e.preventDefault();
+  const tipo = document.getElementById('cc_tipo').value;
+  let volume = 0;
+  if(tipo === 'laje'){
+    const c = num(document.getElementById('cc_laje_comp').value);
+    const l = num(document.getElementById('cc_laje_larg').value);
+    const esp = num(document.getElementById('cc_laje_esp').value);
+    volume = c*l*(esp/100);
+  } else if(tipo === 'viga'){
+    const c = num(document.getElementById('cc_viga_comp').value);
+    const l = num(document.getElementById('cc_viga_larg').value)/100;
+    const a = num(document.getElementById('cc_viga_alt').value)/100;
+    const qtd = Math.max(1, num(document.getElementById('cc_viga_qtd').value));
+    volume = c*l*a*qtd;
+  } else if(tipo === 'pilar'){
+    const l = num(document.getElementById('cc_pilar_larg').value)/100;
+    const p = num(document.getElementById('cc_pilar_prof').value)/100;
+    const a = num(document.getElementById('cc_pilar_alt').value);
+    const qtd = Math.max(1, num(document.getElementById('cc_pilar_qtd').value));
+    volume = l*p*a*qtd;
+  } else if(tipo === 'sapata'){
+    const c = num(document.getElementById('cc_sapata_comp').value);
+    const l = num(document.getElementById('cc_sapata_larg').value);
+    const a = num(document.getElementById('cc_sapata_alt').value)/100;
+    const qtd = Math.max(1, num(document.getElementById('cc_sapata_qtd').value));
+    volume = c*l*a*qtd;
+  }
+
+  if(volume <= 0){ showToast('Preencha as dimensões corretamente.', 'error'); return; }
+
+  const tracoKey = document.getElementById('cc_traco').value;
+  const t = TRACO_CONCRETO[tracoKey];
+  const cimentoKg = volume * t.cimentoKgM3;
+  const cimentoSacos = Math.ceil(cimentoKg/50);
+  const areiaM3 = volume * t.areiaM3;
+  const britaM3 = volume * t.britaM3;
+
+  const html =
+    '<h4>Resultado</h4>' +
+    row('Elemento', capitaliza(tipo)) +
+    row('Volume de concreto', fmtNum(volume,3) + ' m³') +
+    row('Traço utilizado', tracoKey) +
+    row('Cimento estimado', fmtNum(cimentoKg,1) + ' kg (~' + cimentoSacos + ' sacos de 50kg)') +
+    row('Areia estimada', fmtNum(areiaM3,2) + ' m³') +
+    row('Brita estimada', fmtNum(britaM3,2) + ' m³', true) +
+    saveToProjectBtn('concreto');
+  const box = document.getElementById('resConcreto');
+  box.innerHTML = html; box.hidden = false;
+
+  const inputs = collectInputsByPrefix('cc_');
+  const resumo = capitaliza(tipo)+' — '+fmtNum(volume,3)+' m³';
+  addHistorico('concreto', 'Calculadora de Concreto', resumo, inputs);
+  wireSaveToProjectBtn(box, 'concreto', 'Calculadora de Concreto ('+capitaliza(tipo)+')', resumo, { tipo:tipo, volume:volume, cimentoKg:cimentoKg, areiaM3:areiaM3, britaM3:britaM3 });
+});
+
+/* ---------- 8.6 ARGAMASSA ---------- */
+const TRACO_ARGAMASSA = {
+  '1:3': { cimentoKgM3:325, areiaM3:1.05 },
+  '1:4': { cimentoKgM3:260, areiaM3:1.10 },
+  '1:5': { cimentoKgM3:215, areiaM3:1.15 }
+};
+document.getElementById('formArgamassa').addEventListener('submit', function(e){
+  e.preventDefault();
+  const tipo = document.getElementById('ag_tipo').value;
+  const area = num(document.getElementById('ag_area').value);
+  const espessura = num(document.getElementById('ag_espessura').value);
+  const tracoKey = document.getElementById('ag_traco').value;
+
+  if(area<=0 || espessura<=0){ showToast('Preencha área e espessura.', 'error'); return; }
+
+  const volume = area * (espessura/100);
+  const t = TRACO_ARGAMASSA[tracoKey];
+  const cimentoKg = volume * t.cimentoKgM3;
+  const cimentoSacos = Math.ceil(cimentoKg/50);
+  const areiaM3 = volume * t.areiaM3;
+
+  const html =
+    '<h4>Resultado</h4>' +
+    row('Finalidade', capitaliza(tipo)) +
+    row('Volume estimado', fmtNum(volume,3) + ' m³') +
+    row('Traço utilizado', tracoKey) +
+    row('Cimento estimado', fmtNum(cimentoKg,1) + ' kg (~' + cimentoSacos + ' sacos de 50kg)') +
+    row('Areia estimada', fmtNum(areiaM3,2) + ' m³', true) +
+    saveToProjectBtn('argamassa');
+  const box = document.getElementById('resArgamassa');
+  box.innerHTML = html; box.hidden = false;
+
+  const inputs = { ag_tipo:tipo, ag_area:area, ag_espessura:espessura, ag_traco:tracoKey };
+  const resumo = capitaliza(tipo)+' — '+fmtNum(volume,3)+' m³';
+  addHistorico('argamassa', 'Calculadora de Argamassa', resumo, inputs);
+  wireSaveToProjectBtn(box, 'argamassa', 'Calculadora de Argamassa ('+capitaliza(tipo)+')', resumo, { tipo:tipo, volume:volume, cimentoKg:cimentoKg, areiaM3:areiaM3 });
+});
+
+/* ---------- Auxiliares de resultado ---------- */
+function row(label, value, isTotal){
+  return '<div class="result-row' + (isTotal?' total':'') + '"><span>' + esc(label) + '</span><span class="rv">' + esc(value) + '</span></div>';
+}
+function capitaliza(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+function collectInputsByPrefix(prefix){
+  const out = {};
+  document.querySelectorAll('[id^="'+prefix+'"]').forEach(function(el){
+    if(!el.hidden) out[el.id] = el.value;
+  });
+  return out;
+}
+function saveToProjectBtn(){
+  return '<button type="button" class="btn-secondary" style="width:100%;margin-top:12px;background:rgba(255,255,255,.08);color:#F5F3EE;border-color:rgba(255,255,255,.2);" data-save-project>Guardar cálculo no projeto ativo</button>';
+}
+function wireSaveToProjectBtn(box, tipo, titulo, resumo, resultado){
+  const btn = box.querySelector('[data-save-project]');
+  if(btn) btn.addEventListener('click', function(){
+    salvarCalculoNoProjetoAtivo(tipo, titulo, resumo, resultado);
+  });
+}
+
+/* ===========================================================
+   9. MATERIAIS
+=========================================================== */
+const materialModal = document.getElementById('materialModal');
+document.getElementById('btnAddMaterial').addEventListener('click', function(){ abrirModalMaterial(null); });
+document.getElementById('materialModalCancel').addEventListener('click', function(){ materialModal.hidden = true; });
+
+function abrirModalMaterial(mat){
+  document.getElementById('materialModalTitle').textContent = mat ? 'Editar material' : 'Novo material';
+  document.getElementById('mat_id').value = mat ? mat.id : '';
+  document.getElementById('mat_nome').value = mat ? mat.nome : '';
+  document.getElementById('mat_categoria').value = mat ? (mat.categoria || 'Outros') : 'Outros';
+  document.getElementById('mat_unidade').value = mat ? mat.unidade : 'unidade';
+  document.getElementById('mat_quantidade').value = mat ? (mat.quantidade||0) : 0;
+  document.getElementById('mat_preco').value = mat ? mat.preco : 0;
+  materialModal.hidden = false;
+}
+
+document.getElementById('formMaterial').addEventListener('submit', function(e){
+  e.preventDefault();
+  const id = document.getElementById('mat_id').value;
+  const nome = document.getElementById('mat_nome').value.trim();
+  const categoria = document.getElementById('mat_categoria').value;
+  const unidade = document.getElementById('mat_unidade').value;
+  const quantidade = num(document.getElementById('mat_quantidade').value);
+  const preco = num(document.getElementById('mat_preco').value);
+  if(!nome){ showToast('Informe o nome do material.', 'error'); return; }
+  if(preco < 0){ showToast('O preço não pode ser negativo.', 'error'); return; }
+
+  if(id){
+    const m = state.materiais.find(function(x){ return x.id === id; });
+    if(m){ m.nome = nome; m.categoria = categoria; m.unidade = unidade; m.quantidade = quantidade; m.preco = preco; }
+    showToast('Material atualizado.', 'success');
+  } else {
+    state.materiais.push({ id: uid(), nome:nome, categoria:categoria, unidade:unidade, quantidade:quantidade, preco:preco });
+    showToast('Material adicionado.', 'success');
+  }
+  saveMateriais();
+  materialModal.hidden = true;
+  renderMateriais();
+});
+
+function renderMateriais(filtro){
+  const list = document.getElementById('materialList');
+  const empty = document.getElementById('materialEmpty');
+  const term = (filtro !== undefined ? filtro : (document.getElementById('materialSearch').value||'')).toLowerCase().trim();
+  const itens = state.materiais.filter(function(m){
+    return m.nome.toLowerCase().indexOf(term) !== -1 || (m.categoria||'').toLowerCase().indexOf(term) !== -1;
+  });
+  list.innerHTML = '';
+  if(state.materiais.length === 0){ empty.hidden = false; return; }
+  empty.hidden = true;
+  if(itens.length === 0){
+    list.innerHTML = '<p class="empty-sub" style="text-align:center;padding:20px 0;">Nenhum material encontrado para "'+esc(term)+'".</p>';
+    return;
+  }
+  itens.sort(function(a,b){ return a.nome.localeCompare(b.nome); });
+  itens.forEach(function(m){
+    const row = document.createElement('div');
+    row.className = 'list-item';
+    row.innerHTML =
+      '<div class="list-item-main">' +
+        '<div class="list-item-title">' + esc(m.nome) + '</div>' +
+        '<div class="list-item-sub">' + esc(m.categoria||'Outros') + ' · ' + esc(m.unidade) + ' · em estoque: ' + fmtNum(m.quantidade||0,2) + '</div>' +
+      '</div>' +
+      '<div class="list-item-value">' + fmtKz(m.preco) + '</div>' +
+      '<div class="list-item-actions">' +
+        '<button class="icon-btn-sm" data-edit-mat="' + m.id + '" aria-label="Editar">' +
+          '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>' +
+        '</button>' +
+        '<button class="icon-btn-sm danger" data-del-mat="' + m.id + '" aria-label="Excluir">' +
+          '<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V5h6v2M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</button>' +
+      '</div>';
+    list.appendChild(row);
+  });
+}
+document.getElementById('materialSearch').addEventListener('input', function(){ renderMateriais(this.value); });
+document.getElementById('materialList').addEventListener('click', function(e){
+  const editBtn = e.target.closest('[data-edit-mat]');
+  const delBtn = e.target.closest('[data-del-mat]');
+  if(editBtn){
+    const m = state.materiais.find(function(x){ return x.id === editBtn.dataset.editMat; });
+    if(m) abrirModalMaterial(m);
+  }
+  if(delBtn){
+    askConfirm('Excluir material', 'Deseja realmente excluir este material?', function(){
+      state.materiais = state.materiais.filter(function(x){ return x.id !== delBtn.dataset.delMat; });
+      saveMateriais();
+      renderMateriais();
+      showToast('Material excluído.', 'success');
+    });
+  }
+});
+
+/* ===========================================================
+   10. ORÇAMENTO
+=========================================================== */
+const budgetItemModal = document.getElementById('budgetItemModal');
+document.getElementById('btnAddBudgetItem').addEventListener('click', function(){
+  if(state.materiais.length === 0){ showToast('Cadastre ao menos um material antes.', 'error'); return; }
+  abrirModalBudgetItem(null);
+});
+document.getElementById('budgetModalCancel').addEventListener('click', function(){ budgetItemModal.hidden = true; });
+
+function preencherSelectMateriais(selectedId){
+  const sel = document.getElementById('bi_material');
+  sel.innerHTML = '';
+  state.materiais.slice().sort(function(a,b){return a.nome.localeCompare(b.nome);}).forEach(function(m){
+    const opt = document.createElement('option');
+    opt.value = m.id; opt.textContent = m.nome;
+    if(m.id === selectedId) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+function preencherCamposMaterialSelecionado(){
+  const matId = document.getElementById('bi_material').value;
+  const m = state.materiais.find(function(x){ return x.id === matId; });
+  if(m){
+    document.getElementById('bi_unidade').value = m.unidade;
+    if(!document.getElementById('bi_id').value) document.getElementById('bi_preco').value = m.preco;
+  }
+}
+document.getElementById('bi_material').addEventListener('change', preencherCamposMaterialSelecionado);
+
+function abrirModalBudgetItem(item){
+  document.getElementById('budgetModalTitle').textContent = item ? 'Editar item' : 'Adicionar item';
+  document.getElementById('bi_id').value = item ? item.id : '';
+  preencherSelectMateriais(item ? item.materialId : null);
+  preencherCamposMaterialSelecionado();
+  document.getElementById('bi_qtd').value = item ? item.qtd : 1;
+  if(item) document.getElementById('bi_preco').value = item.preco;
+  budgetItemModal.hidden = false;
+}
+
+document.getElementById('formBudgetItem').addEventListener('submit', function(e){
+  e.preventDefault();
+  const id = document.getElementById('bi_id').value;
+  const matId = document.getElementById('bi_material').value;
+  const mat = state.materiais.find(function(x){ return x.id === matId; });
+  const qtd = num(document.getElementById('bi_qtd').value);
+  const unidade = document.getElementById('bi_unidade').value;
+  const preco = num(document.getElementById('bi_preco').value);
+  if(!mat || qtd<=0){ showToast('Selecione um material e uma quantidade válida.', 'error'); return; }
+
+  if(id){
+    const it = state.budget.find(function(x){ return x.id === id; });
+    if(it){ it.materialId=matId; it.materialNome=mat.nome; it.qtd=qtd; it.unidade=unidade; it.preco=preco; }
+    showToast('Item atualizado.', 'success');
+  } else {
+    state.budget.push({ id: uid(), materialId:matId, materialNome:mat.nome, qtd:qtd, unidade:unidade, preco:preco });
+    showToast('Item adicionado ao orçamento.', 'success');
+  }
+  saveBudget();
+  budgetItemModal.hidden = true;
+  renderOrcamento();
+});
+
+function calcularTotaisOrcamento(){
+  const subtotal = state.budget.reduce(function(acc,it){ return acc + it.qtd*it.preco; }, 0);
+  const extra = state.budgetExtra;
+  const total = subtotal + num(extra.maoObra) + num(extra.transporte) + num(extra.outros) - num(extra.desconto);
+  return { subtotal:subtotal, total: total < 0 ? 0 : total };
+}
+
+function renderOrcamento(){
+  const list = document.getElementById('budgetList');
+  const empty = document.getElementById('budgetEmpty');
+  list.innerHTML = '';
+  if(state.budget.length === 0){ empty.hidden = false; }
+  else {
+    empty.hidden = true;
+    state.budget.forEach(function(it){
+      const row = document.createElement('div');
+      row.className = 'list-item';
+      row.innerHTML =
+        '<div class="list-item-main">' +
+          '<div class="list-item-title">' + esc(it.materialNome) + '</div>' +
+          '<div class="list-item-sub">' + fmtNum(it.qtd) + ' ' + esc(it.unidade) + ' × ' + fmtKz(it.preco) + '</div>' +
+        '</div>' +
+        '<div class="list-item-value">' + fmtKz(it.qtd*it.preco) + '</div>' +
+        '<div class="list-item-actions">' +
+          '<button class="icon-btn-sm" data-edit-budget="' + it.id + '" aria-label="Editar">' +
+            '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>' +
+          '</button>' +
+          '<button class="icon-btn-sm danger" data-del-budget="' + it.id + '" aria-label="Excluir">' +
+            '<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V5h6v2M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          '</button>' +
+        '</div>';
+      list.appendChild(row);
+    });
+  }
+
+  document.getElementById('bg_mao_obra').value = state.budgetExtra.maoObra;
+  document.getElementById('bg_transporte').value = state.budgetExtra.transporte;
+  document.getElementById('bg_outros').value = state.budgetExtra.outros;
+  document.getElementById('bg_desconto').value = state.budgetExtra.desconto;
+
+  const totais = calcularTotaisOrcamento();
+  const projetoAtivo = nomeProjetoAtivo();
+  const summary = document.getElementById('budgetSummaryCard');
+  summary.innerHTML =
+    '<h4 style="color:#E5A93A;font-size:12.5px;margin-bottom:10px;">Resumo do orçamento</h4>' +
+    row('Subtotal de materiais', fmtKz(totais.subtotal)) +
+    row('Total da obra', fmtKz(totais.total), true) +
+    '<div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;">' +
+      (projetoAtivo
+        ? 'Projeto ativo: <strong>' + esc(projetoAtivo) + '</strong>'
+        : 'Nenhum projeto ativo. Abra um projeto para guardar este orçamento nele.') +
+    '</div>' +
+    (projetoAtivo ? '<button type="button" class="btn-secondary" id="btnSalvarOrcamentoProjeto" style="width:100%;margin-top:10px;background:rgba(255,255,255,.08);color:#F5F3EE;border-color:rgba(255,255,255,.2);">Guardar orçamento neste projeto</button>' : '');
+
+  const btnSalvar = document.getElementById('btnSalvarOrcamentoProjeto');
+  if(btnSalvar) btnSalvar.addEventListener('click', function(){
+    const p = state.projetos.find(function(x){ return x.id === state.currentProjetoId; });
+    if(!p) return;
+    p.orcamento = state.budget.map(function(it){ return Object.assign({}, it); });
+    p.budgetExtra = Object.assign({}, state.budgetExtra);
+    saveProjetos();
+    showToast('Orçamento guardado no projeto "' + p.nome + '".', 'success');
+  });
+}
+
+['bg_mao_obra','bg_transporte','bg_outros','bg_desconto'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){
+    state.budgetExtra.maoObra = num(document.getElementById('bg_mao_obra').value);
+    state.budgetExtra.transporte = num(document.getElementById('bg_transporte').value);
+    state.budgetExtra.outros = num(document.getElementById('bg_outros').value);
+    state.budgetExtra.desconto = num(document.getElementById('bg_desconto').value);
+    saveBudgetExtra();
+    renderOrcamento();
+  });
+});
+
+document.getElementById('budgetList').addEventListener('click', function(e){
+  const editBtn = e.target.closest('[data-edit-budget]');
+  const delBtn = e.target.closest('[data-del-budget]');
+  if(editBtn){
+    const it = state.budget.find(function(x){ return x.id === editBtn.dataset.editBudget; });
+    if(it) abrirModalBudgetItem(it);
+  }
+  if(delBtn){
+    askConfirm('Excluir item', 'Deseja remover este item do orçamento?', function(){
+      state.budget = state.budget.filter(function(x){ return x.id !== delBtn.dataset.delBudget; });
+      saveBudget();
+      renderOrcamento();
+      showToast('Item removido.', 'success');
+    });
+  }
+});
+
+document.getElementById('btnLimparOrcamento').addEventListener('click', function(){
+  if(state.budget.length === 0){ showToast('O orçamento já está vazio.', 'info'); return; }
+  askConfirm('Limpar orçamento', 'Isso vai remover todos os itens do orçamento atual (não afeta projetos já salvos). Continuar?', function(){
+    state.budget = [];
+    state.budgetExtra = { maoObra:0, transporte:0, outros:0, desconto:0 };
+    saveBudget(); saveBudgetExtra();
+    renderOrcamento();
+    showToast('Orçamento limpo.', 'success');
+  });
+});
+
+/* ===========================================================
+   11. PROJETOS
+=========================================================== */
+const projetoModal = document.getElementById('projetoModal');
+document.getElementById('btnAddProjeto').addEventListener('click', function(){ abrirModalProjeto(null); });
+document.getElementById('projetoModalCancel').addEventListener('click', function(){ projetoModal.hidden = true; });
+
+function abrirModalProjeto(proj){
+  document.getElementById('projetoModalTitle').textContent = proj ? 'Editar projeto' : 'Novo projeto';
+  document.getElementById('pj_id').value = proj ? proj.id : '';
+  document.getElementById('pj_nome').value = proj ? proj.nome : '';
+  document.getElementById('pj_cliente').value = proj ? proj.cliente : '';
+  document.getElementById('pj_local').value = proj ? proj.local : '';
+  document.getElementById('pj_data').value = proj ? proj.data : '';
+  document.getElementById('pj_obs').value = proj ? proj.obs : '';
+  projetoModal.hidden = false;
+}
+
+document.getElementById('formProjeto').addEventListener('submit', function(e){
+  e.preventDefault();
+  const id = document.getElementById('pj_id').value;
+  const nome = document.getElementById('pj_nome').value.trim();
+  const cliente = document.getElementById('pj_cliente').value.trim();
+  const local = document.getElementById('pj_local').value.trim();
+  const data = document.getElementById('pj_data').value;
+  const obs = document.getElementById('pj_obs').value.trim();
+  if(!nome){ showToast('Informe o nome do projeto.', 'error'); return; }
+
+  if(id){
+    const p = state.projetos.find(function(x){ return x.id === id; });
+    if(p){ p.nome=nome; p.cliente=cliente; p.local=local; p.data=data; p.obs=obs; }
+    showToast('Projeto atualizado.', 'success');
+    saveProjetos();
+    projetoModal.hidden = true;
+    if(state.navStack[state.navStack.length-1] === 'screen-projeto-detalhe') renderProjetoDetalhe();
+    else renderProjetos();
+  } else {
+    const novo = { id: uid(), nome:nome, cliente:cliente, local:local, data:data, obs:obs, orcamento:[], budgetExtra:{maoObra:0,transporte:0,outros:0,desconto:0}, calculos:[], criadoEm: new Date().toISOString() };
+    state.projetos.unshift(novo);
+    saveProjetos();
+    showToast('Projeto criado.', 'success');
+    projetoModal.hidden = true;
+    renderProjetos();
+  }
+});
+
+function renderProjetos(){
+  const list = document.getElementById('projetoList');
+  const empty = document.getElementById('projetoEmpty');
+  list.innerHTML = '';
+  if(state.projetos.length === 0){ empty.hidden = false; return; }
+  empty.hidden = true;
+  state.projetos.forEach(function(p){
+    const row = document.createElement('div');
+    row.className = 'list-item';
+    row.style.cursor = 'pointer';
+    row.innerHTML =
+      '<div class="list-item-main" data-open-proj="' + p.id + '">' +
+        '<div class="list-item-title">' + esc(p.nome) + (state.currentProjetoId===p.id ? ' <span style="color:#4C8DBF;">• ativo</span>' : '') + '</div>' +
+        '<div class="list-item-sub">' + esc(p.cliente || 'Sem cliente') + (p.local ? ' — ' + esc(p.local) : '') + '</div>' +
+      '</div>' +
+      '<div class="list-item-actions">' +
+        '<button class="icon-btn-sm" data-open-proj="' + p.id + '" aria-label="Abrir">' +
+          '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</button>' +
+      '</div>';
+    list.appendChild(row);
+  });
+}
+document.getElementById('projetoList').addEventListener('click', function(e){
+  const openEl = e.target.closest('[data-open-proj]');
+  if(openEl){ abrirProjeto(openEl.dataset.openProj); }
+});
+
+function abrirProjeto(id){
+  state.currentProjetoId = id;
+  saveCurrentProjeto();
+  navigateTo('screen-projeto-detalhe');
+}
+
+function renderProjetoDetalhe(){
+  const p = state.projetos.find(function(x){ return x.id === state.currentProjetoId; });
+  const container = document.getElementById('projetoDetalheInfo');
+  if(!p){ container.innerHTML = '<p>Projeto não encontrado.</p>'; return; }
+  document.getElementById('screen-projeto-detalhe').dataset.title = p.nome;
+  headerTitle.textContent = p.nome;
+
+  container.innerHTML =
+    pdRow('Cliente', p.cliente || '—') +
+    pdRow('Localização', p.local || '—') +
+    pdRow('Data', p.data ? new Date(p.data+'T00:00:00').toLocaleDateString('pt-PT') : '—') +
+    pdRow('Observações', p.obs || '—') +
+    pdRow('Criado em', fmtData(p.criadoEm));
+
+  const orcList = document.getElementById('projetoOrcamentoList');
+  const orcEmpty = document.getElementById('projetoOrcamentoEmpty');
+  orcList.innerHTML = '';
+  if(!p.orcamento || p.orcamento.length === 0){ orcEmpty.hidden = false; }
+  else {
+    orcEmpty.hidden = true;
+    let totalOrc = p.orcamento.reduce(function(a,it){return a+it.qtd*it.preco;},0);
+    const extra = p.budgetExtra || {maoObra:0,transporte:0,outros:0,desconto:0};
+    totalOrc += num(extra.maoObra)+num(extra.transporte)+num(extra.outros)-num(extra.desconto);
+    p.orcamento.forEach(function(it){
+      const row = document.createElement('div');
+      row.className = 'list-item';
+      row.innerHTML =
+        '<div class="list-item-main"><div class="list-item-title">' + esc(it.materialNome) + '</div>' +
+        '<div class="list-item-sub">' + fmtNum(it.qtd) + ' ' + esc(it.unidade) + ' × ' + fmtKz(it.preco) + '</div></div>' +
+        '<div class="list-item-value">' + fmtKz(it.qtd*it.preco) + '</div>';
+      orcList.appendChild(row);
+    });
+    const totalRow = document.createElement('div');
+    totalRow.className = 'list-item';
+    totalRow.innerHTML = '<div class="list-item-main"><div class="list-item-title">Total do orçamento</div></div><div class="list-item-value">' + fmtKz(totalOrc) + '</div>';
+    orcList.appendChild(totalRow);
+  }
+
+  const calcList = document.getElementById('projetoCalculosList');
+  const calcEmpty = document.getElementById('projetoCalculosEmpty');
+  calcList.innerHTML = '';
+  if(!p.calculos || p.calculos.length === 0){ calcEmpty.hidden = false; }
+  else {
+    calcEmpty.hidden = true;
+    p.calculos.forEach(function(c){
+      const row = document.createElement('div');
+      row.className = 'list-item';
+      row.innerHTML =
+        '<div class="list-item-main"><div class="list-item-title">' + esc(c.titulo) + '</div>' +
+        '<div class="list-item-sub">' + esc(c.resumo) + '</div>' +
+        '<div class="list-item-sub">' + fmtData(c.data) + '</div></div>' +
+        '<div class="list-item-actions"><button class="icon-btn-sm danger" data-del-proj-calc="' + c.id + '" aria-label="Excluir">' +
+          '<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V5h6v2M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</button></div>';
+      calcList.appendChild(row);
+    });
+  }
+}
+document.getElementById('projetoCalculosList').addEventListener('click', function(e){
+  const delBtn = e.target.closest('[data-del-proj-calc]');
+  if(delBtn){
+    const p = state.projetos.find(function(x){ return x.id === state.currentProjetoId; });
+    if(!p) return;
+    askConfirm('Excluir cálculo', 'Remover este cálculo salvo do projeto?', function(){
+      p.calculos = p.calculos.filter(function(c){ return c.id !== delBtn.dataset.delProjCalc; });
+      saveProjetos();
+      renderProjetoDetalhe();
+      showToast('Cálculo removido do projeto.', 'success');
+    });
+  }
+});
+function pdRow(label, value){
+  return '<div class="pd-row"><span class="pd-label">' + esc(label) + '</span><span>' + esc(value) + '</span></div>';
+}
+
+document.getElementById('btnEditarProjeto').addEventListener('click', function(){
+  const p = state.projetos.find(function(x){ return x.id === state.currentProjetoId; });
+  if(p) abrirModalProjeto(p);
+});
+document.getElementById('btnDuplicarProjeto').addEventListener('click', function(){
+  const p = state.projetos.find(function(x){ return x.id === state.currentProjetoId; });
+  if(!p) return;
+  const copia = JSON.parse(JSON.stringify(p));
+  copia.id = uid();
+  copia.nome = p.nome + ' (cópia)';
+  copia.criadoEm = new Date().toISOString();
+  state.projetos.unshift(copia);
+  saveProjetos();
+  showToast('Projeto duplicado.', 'success');
+  navigateTo('screen-projetos', { reset:true });
+});
+document.getElementById('btnExcluirProjeto').addEventListener('click', function(){
+  const p = state.projetos.find(function(x){ return x.id === state.currentProjetoId; });
+  if(!p) return;
+  askConfirm('Excluir projeto', 'Deseja excluir o projeto "' + p.nome + '"? Esta ação não pode ser desfeita.', function(){
+    state.projetos = state.projetos.filter(function(x){ return x.id !== p.id; });
+    if(state.currentProjetoId === p.id){ state.currentProjetoId = null; saveCurrentProjeto(); }
+    saveProjetos();
+    showToast('Projeto excluído.', 'success');
+    navigateTo('screen-projetos', { reset:true });
+  });
+});
+
+/* ---------------------------------------------------------
+   12. QUICK STATS DA HOME
+--------------------------------------------------------- */
+function renderHomeStats(){
+  const el = document.getElementById('homeQuickStats');
+  const totais = calcularTotaisOrcamento();
+  el.innerHTML =
+    '<div class="stat-chip"><div class="stat-num">' + state.projetos.length + '</div><div class="stat-label">Projetos</div></div>' +
+    '<div class="stat-chip"><div class="stat-num">' + state.materiais.length + '</div><div class="stat-label">Materiais</div></div>' +
+    '<div class="stat-chip"><div class="stat-num">' + totais.total.toLocaleString('pt-PT',{minimumFractionDigits:0,maximumFractionDigits:0}) + '</div><div class="stat-label">Orçamento (' + APP_CONFIG.moeda.simbolo + ')</div></div>';
+}
+
+/* ---------------------------------------------------------
+   13. INICIALIZAÇÃO
+--------------------------------------------------------- */
+function init(){
+  loadAll();
+  renderHomeStats();
+  applyScreen('screen-home');
+  window.addEventListener('error', function(ev){
+    console.error('Erro na aplicação:', ev.error || ev.message);
+  });
+}
+document.addEventListener('DOMContentLoaded', init);
+
+})();
+
+</script>
+</body>
+</html>
